@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MedPraktik logo mark">
+  <rect width="512" height="512" rx="128" fill="#047857"/>
+  <path d="M142 350V162h54l60 95 60-95h54v188h-50V241l-51 80h-27l-50-80v109h-50Z" fill="#ffffff"/>
+  <path d="M184 388h144" stroke="#a7f3d0" stroke-width="24" stroke-linecap="round"/>
+</svg>
