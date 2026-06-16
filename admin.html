@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Admin Order MedPraktik</title>
+    <link rel="icon" href="assets/brand/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="section admin-page">
+      <div class="section-inner">
+        <div class="section-heading">
+          <p class="eyebrow">Admin MedPraktik</p>
+          <h1>Order, pembayaran, dan approval license.</h1>
+          <p>Halaman ringan untuk v1. Gunakan token admin dari environment Vercel. Jangan bagikan link/token ini.</p>
+        </div>
+
+        <form class="admin-token-form" data-admin-token-form>
+          <label>
+            Admin token
+            <input name="adminToken" type="password" autocomplete="off" required>
+          </label>
+          <button class="button primary" type="submit">Load Orders</button>
+        </form>
+
+        <div class="admin-orders" data-admin-orders>
+          <p>Masukkan token untuk melihat order terbaru.</p>
+        </div>
+      </div>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>
