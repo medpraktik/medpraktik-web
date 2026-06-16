@@ -75,3 +75,9 @@ revoke all on public.orders from anon, authenticated;
 revoke all on public.payment_events from anon, authenticated;
 revoke all on public.licenses from anon, authenticated;
 revoke all on public.audit_logs from anon, authenticated;
+
+grant usage on schema public to service_role;
+grant all on public.orders to service_role;
+grant all on public.payment_events to service_role;
+grant all on public.licenses to service_role;
+grant all on public.audit_logs to service_role;
