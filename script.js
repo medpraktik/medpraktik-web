@@ -5,7 +5,7 @@ const galleryButtons = document.querySelectorAll("[data-shot]");
 const galleryImage = document.querySelector("[data-gallery-shot]");
 const whatsappLinks = document.querySelectorAll(".js-whatsapp-link");
 
-const WHATSAPP_NUMBER = "6283114869650";
+const WHATSAPP_NUMBER = "6283896985999";
 const WHATSAPP_MESSAGE =
   "Halo, saya ingin melihat video demo singkat atau jadwal demo live 15 menit MedPraktik dengan data dummy. Saya ingin dibantu pilih paket.";
 
