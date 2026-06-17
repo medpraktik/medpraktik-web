@@ -8,6 +8,8 @@ const { fulfillOrder } = require("../server/fulfillment");
 const { verifySignature } = require("../server/midtrans");
 const { findOrderByOrderId, insertRow, updateRows } = require("../server/supabase-rest");
 
+const FULFILLMENT_STATUSES = new Set(["license_generated", "fulfilled"]);
+
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return methodNotAllowed(res);
 
@@ -38,7 +40,9 @@ module.exports = async function handler(req, res) {
       txStatus === "settlement" ||
       (txStatus === "capture" && (!fraudStatus || fraudStatus === "accept"));
 
-    if (isPaid) {
+    if (isPaid && FULFILLMENT_STATUSES.has(order.status) && order.license_id) {
+      nextStatus = order.status;
+    } else if (isPaid) {
       nextStatus = order.device_fingerprint ? "paid" : "waiting_fingerprint";
     } else if (FAILED_STATUSES.has(txStatus)) {
       nextStatus = txStatus === "expire" ? "expired" : "cancelled";
