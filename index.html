@@ -448,10 +448,10 @@
           <div class="section-heading">
             <p class="eyebrow">Trial / Beli / Upgrade</p>
             <h2>Buat request resmi sebelum pembayaran dan aktivasi.</h2>
-            <p>Pilih kebutuhan Anda, isi data praktik, lalu lanjutkan. Untuk trial, installer tersedia setelah order dibuat; setelah install, buka layar Aktivasi untuk melihat fingerprint perangkat.</p>
+            <p>Pilih kebutuhan Anda, isi data praktik, lalu lanjutkan. Untuk keamanan aplikasi, link installer resmi dikirim setelah order/request tercatat. Setelah install, buka layar Aktivasi untuk melihat fingerprint perangkat.</p>
             <div class="flow-cards" aria-label="Alur order MedPraktik">
               <article><strong>1. Request Trial</strong><span>Isi data praktik dan kontak.</span></article>
-              <article><strong>2. Download Installer</strong><span>Download dari halaman status order atau minta link via WhatsApp.</span></article>
+              <article><strong>2. Link Installer</strong><span>Dikirim ke WhatsApp/email setelah order tercatat.</span></article>
               <article><strong>3. Ambil Fingerprint</strong><span>Install aplikasi, buka Aktivasi/Lisensi, lalu copy fingerprint.</span></article>
               <article><strong>4. Trial License</strong><span>Kirim fingerprint agar trial license dibuat.</span></article>
             </div>
@@ -491,7 +491,7 @@
             <label class="span-2">
               Fingerprint perangkat (boleh dikosongkan)
               <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Diisi nanti dari layar Aktivasi MedPraktik">
-              <small>Belum punya installer? Lanjutkan order dulu. Setelah order trial dibuat, buka halaman status untuk download installer, install di laptop target, lalu copy fingerprint dari layar Aktivasi/Lisensi.</small>
+              <small>Belum punya installer? Lanjutkan order dulu. Link installer resmi dikirim setelah order/request tercatat agar Anda mendapat versi terbaru, instruksi aktivasi yang benar, dan bantuan jika ada kendala instalasi.</small>
             </label>
             <label class="span-2">
               Catatan
@@ -511,7 +511,7 @@
           <div>
             <p class="eyebrow">Status order</p>
             <h2>Cek pembayaran, fingerprint, dan license key.</h2>
-            <p>Gunakan link cek status dari order Anda untuk melihat pembayaran, mengirim fingerprint, dan mengambil license key. Jangan bagikan link ini ke orang lain.</p>
+            <p>Gunakan link cek status dari order Anda untuk melihat pembayaran, follow up installer, mengirim fingerprint, dan mengambil license key. Jangan bagikan link ini ke orang lain.</p>
           </div>
           <div class="status-panel">
             <form class="status-checker" data-status-form>
@@ -597,7 +597,7 @@
             <li><span>1</span><strong>Video demo singkat</strong><p>Rekaman 3-7 menit untuk melihat gambaran dashboard, pasien, SOAP, template, dan dokumen.</p></li>
             <li><span>2</span><strong>Chat kebutuhan praktik</strong><p>Cek jenis praktik, jumlah perangkat, dan kebutuhan antrean, kasir, invoice, atau jaringan lokal.</p></li>
             <li><span>3</span><strong>Demo live 15 menit</strong><p>Penjual share screen via WhatsApp/Meet/Zoom memakai data dummy, lalu bantu rekomendasi paket.</p></li>
-            <li><span>4</span><strong>Pembayaran & request lisensi</strong><p>Pembayaran via QRIS/transfer, lalu tombol Minta Lisensi mengirim Request ID, paket, owner/praktik, License ID, dan kode perangkat via WhatsApp.</p></li>
+            <li><span>4</span><strong>Pembayaran & request lisensi</strong><p>Order tercatat, link installer resmi dikirim ke WhatsApp/email, lalu fingerprint perangkat dikirim untuk pembuatan license key.</p></li>
             <li><span>5</span><strong>Onboarding setelah bayar</strong><p>Instalasi, aktivasi, setup nama praktik, template awal, dan panduan backup dibantu sesuai paket.</p></li>
           </ol>
           <div class="purchase-note">
@@ -615,7 +615,7 @@
             <p>Setelah pembayaran dikonfirmasi, pembeli dibantu sampai aplikasi siap dicoba di laptop praktik sesuai paket yang dipilih.</p>
           </div>
           <div class="support-grid">
-            <article class="support-item"><strong>Installer MedPraktik</strong><span>Installer dan panduan instalasi dikirim setelah pembayaran dikonfirmasi.</span></article>
+            <article class="support-item"><strong>Installer MedPraktik</strong><span>Installer resmi dan panduan instalasi dikirim setelah order/request tercatat agar pembeli mendapat versi terbaru dan bantuan aktivasi yang benar.</span></article>
             <article class="support-item"><strong>Request lisensi jelas</strong><span>Aplikasi menyiapkan pesan Minta Lisensi dengan Request ID, paket diminta, data owner/praktik, License ID, dan kode perangkat.</span></article>
             <article class="support-item"><strong>Setup nama praktik</strong><span>Identitas praktik disiapkan agar dokumen klinis terlihat rapi.</span></article>
             <article class="support-item"><strong>Template awal</strong><span>Template SOAP, resep/surat, dan invoice disiapkan sesuai paket, termasuk batas template sesuai lisensi.</span></article>
@@ -740,7 +740,7 @@
             <details><summary>Apakah bisa cetak resep, surat, invoice, dan kwitansi?</summary><p>Bisa. Resep menampilkan data pasien dan BB bila tersedia dari TTV. Surat sakit, sehat, dan keterangan umum memakai format administratif yang tidak membuka detail medis yang tidak perlu. Surat rujukan membawa ringkasan SOAP. Invoice dan kwitansi tersedia di Basic Plus.</p></details>
             <details><summary>Apakah template bisa dibuat dan diedit sendiri?</summary><p>Ya. Template SOAP, resep cepat, surat klinis, invoice, dan kwitansi dapat dibuat atau diedit di aplikasi sesuai kebutuhan praktik. Basic dibatasi maksimal 3 template SOAP dan 3 template resep cepat. Basic Plus ke atas memakai batas lebih tinggi sekitar 50 untuk template SOAP/resep cepat, sementara template invoice/kwitansi tersedia untuk Basic Plus ke atas.</p></details>
             <details><summary>Apakah sudah Android, online, cloud sync, atau SATUSEHAT?</summary><p>Belum diklaim siap hari ini. Android/tablet, online, cloud backup/sync, dan SATUSEHAT-ready adalah arah pengembangan lanjutan. Pro / Pengembangan Lanjutan belum dijual publik sampai scope fitur tersebut lebih jelas.</p></details>
-            <details><summary>Bagaimana cara demo dan pembayaran?</summary><p>Calon pembeli bisa mulai dari video demo singkat, lalu lanjut demo live 15 menit bila cocok. Trial dapat diberikan melalui WhatsApp untuk evaluasi terbatas memakai license key dan fingerprint perangkat, bukan download bebas otomatis. Setelah paket disepakati, pembayaran dilakukan manual via transfer bank atau QRIS. Aplikasi juga memiliki tombol Minta Lisensi untuk mengirim request aktivasi/upgrade via WhatsApp dengan Request ID, paket diminta, data owner/praktik, License ID, dan kode perangkat.</p></details>
+            <details><summary>Bagaimana cara demo dan pembayaran?</summary><p>Calon pembeli bisa mulai dari video demo singkat, lalu lanjut demo live 15 menit bila cocok. Trial dapat dimulai dari form order resmi. Link installer tidak dibuka bebas untuk umum demi menjaga distribusi versi resmi, mengurangi risiko penyalahgunaan, dan memastikan pembeli mendapat panduan aktivasi yang benar. Setelah paket disepakati, pembayaran dilakukan via Midtrans/konfirmasi admin sesuai paket.</p></details>
             <details><summary>Setelah bayar mendapat apa?</summary><p>Pembeli mendapat installer MedPraktik, panduan instalasi, aktivasi lisensi berbasis fingerprint perangkat, setup nama praktik/klinik, template awal sesuai paket, panduan backup, dan support awal sesuai paket: Basic 30 hari, Basic Plus 60 hari, Advanced 90 hari. Data yang dibuat saat trial tetap tersimpan di perangkat dan bisa dilanjutkan setelah aktivasi permanen.</p></details>
           </div>
         </div>
