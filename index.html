@@ -448,36 +448,30 @@
           <div class="section-heading">
             <p class="eyebrow">Trial / Beli / Upgrade</p>
             <h2>Buat request resmi sebelum pembayaran dan aktivasi.</h2>
-            <p>Isi data praktik dan kode perangkat jika sudah tersedia. Basic dan Basic Plus diarahkan ke pembayaran Midtrans. Trial, Advanced, dan Pro tetap masuk antrian review agar tidak salah aktivasi.</p>
+            <p>Pilih kebutuhan Anda, isi data praktik, lalu lanjutkan. Fingerprint perangkat bisa dikirim setelah aplikasi MedPraktik terinstal di laptop.</p>
             <div class="flow-cards" aria-label="Alur order MedPraktik">
-              <article><strong>1. Form</strong><span>Data owner, praktik, kontak, paket, dan fingerprint.</span></article>
+              <article><strong>1. Form</strong><span>Data owner, praktik, kontak, dan kebutuhan.</span></article>
               <article><strong>2. Order</strong><span>Order tercatat di Supabase dengan status dan audit.</span></article>
               <article><strong>3. Payment</strong><span>Midtrans memproses pembayaran paket berbayar.</span></article>
-              <article><strong>4. License</strong><span>License dibuat otomatis jika aman, atau masuk review admin.</span></article>
+              <article><strong>4. Aktivasi</strong><span>Install aplikasi, kirim fingerprint, lalu license dibuat.</span></article>
             </div>
           </div>
 
           <form class="sales-form" data-order-form>
-            <label>
-              Jenis request
-              <select name="requestType" required>
-                <option value="trial">Trial terbatas</option>
-                <option value="new_license" selected>Beli lisensi baru</option>
-                <option value="upgrade">Upgrade paket</option>
-                <option value="consultation">Konsultasi Advanced/Pro</option>
-              </select>
-            </label>
-            <label>
-              Paket
-              <select name="packageKey" required>
-                <option value="trial">Trial</option>
-                <option value="basic" selected>Basic - Rp3.500.000</option>
-                <option value="basic_plus">Basic Plus - Rp6.500.000</option>
+            <label class="span-2">
+              Saya ingin
+              <select name="orderIntent" required>
+                <option value="trial">Mencoba Trial 14 hari</option>
+                <option value="basic" selected>Beli Basic - Rp3.500.000</option>
+                <option value="basic_plus">Beli Basic Plus - Rp6.500.000</option>
                 <option value="upgrade_basic_to_basic_plus">Upgrade Basic ke Basic Plus - Rp3.300.000</option>
-                <option value="advanced">Advanced - diskusi dulu</option>
-                <option value="pro">Pro / Pengembangan Lanjutan - diskusi dulu</option>
+                <option value="advanced">Konsultasi Advanced / jaringan lokal</option>
+                <option value="pro">Diskusi Pro / pengembangan lanjutan</option>
               </select>
+              <small>Pilih satu kebutuhan utama. Sistem akan mengatur jenis request dan paket yang sesuai.</small>
             </label>
+            <input name="requestType" type="hidden" value="new_license">
+            <input name="packageKey" type="hidden" value="basic">
             <label>
               Nama praktik/klinik
               <input name="practiceName" type="text" autocomplete="organization" required placeholder="Contoh: Praktik dr. Andi">
@@ -495,9 +489,9 @@
               <input name="email" type="email" autocomplete="email" required placeholder="nama@email.com">
             </label>
             <label class="span-2">
-              Fingerprint perangkat
-              <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Isi dari layar Aktivasi MedPraktik jika sudah ada">
-              <small>Boleh dikosongkan dulu. Jika kosong, order masuk status menunggu fingerprint sebelum license dibuat.</small>
+              Fingerprint perangkat (boleh dikosongkan)
+              <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Diisi nanti dari layar Aktivasi MedPraktik">
+              <small>Fingerprint baru tersedia setelah aplikasi MedPraktik terinstal di laptop. Jika belum ada, lanjutkan order dulu; license dibuat setelah fingerprint dikirim.</small>
             </label>
             <label class="span-2">
               Catatan
@@ -517,13 +511,13 @@
           <div>
             <p class="eyebrow">Status order</p>
             <h2>Cek pembayaran, fingerprint, dan license key.</h2>
-            <p>Link status memakai token acak dari order, bukan nomor order publik. Jangan bagikan link ini ke orang lain.</p>
+            <p>Gunakan link cek status dari order Anda untuk melihat pembayaran, mengirim fingerprint, dan mengambil license key. Jangan bagikan link ini ke orang lain.</p>
           </div>
           <div class="status-panel">
             <form class="status-checker" data-status-form>
               <label>
-                Token status order
-                <input name="accessToken" type="text" autocomplete="off" placeholder="Token dari link order">
+                Kode status order
+                <input name="accessToken" type="text" autocomplete="off" placeholder="Kode dari link cek status order">
               </label>
               <button class="button secondary" type="submit">Cek Status</button>
             </form>
@@ -533,7 +527,7 @@
             <form class="fingerprint-form" data-fingerprint-form hidden>
               <label>
                 Kirim fingerprint perangkat
-                <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Paste fingerprint dari aplikasi">
+                <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Paste fingerprint dari layar Aktivasi MedPraktik">
               </label>
               <button class="button primary" type="submit">Simpan Fingerprint</button>
             </form>

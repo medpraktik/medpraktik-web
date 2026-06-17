@@ -48,6 +48,15 @@ const PACKAGE_CATALOG = {
 const PAID_STATUSES = new Set(["settlement", "capture"]);
 const FAILED_STATUSES = new Set(["deny", "cancel", "expire", "failure"]);
 
+const PACKAGE_REQUEST_TYPES = {
+  trial: "trial",
+  basic: "new_license",
+  basic_plus: "new_license",
+  upgrade_basic_to_basic_plus: "upgrade",
+  advanced: "consultation",
+  pro: "consultation",
+};
+
 function json(res, statusCode, data) {
   res.statusCode = statusCode;
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -114,6 +123,9 @@ function assertBuyerInput(input) {
   const packageInfo = PACKAGE_CATALOG[packageKey];
   if (!packageInfo) {
     return { error: "Paket tidak valid." };
+  }
+  if (PACKAGE_REQUEST_TYPES[packageKey] !== requestType) {
+    return { error: "Jenis request dan paket tidak sesuai. Pilih kebutuhan dari form resmi MedPraktik." };
   }
 
   const practiceName = String(input.practiceName || "").trim();
