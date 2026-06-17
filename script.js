@@ -164,6 +164,7 @@ if (fingerprintForm) {
     setStatusHtml("<p>Menyimpan fingerprint...</p>");
     try {
       await postJson("/api/submit-fingerprint", { accessToken, deviceFingerprint });
+      setStatusHtml("<p>Fingerprint tersimpan. Memuat status dan license key...</p>");
       await loadOrderStatus(accessToken);
     } catch (error) {
       setStatusHtml(`<p>${escapeHtml(error.message || "Gagal menyimpan fingerprint.")}</p>`);
@@ -210,36 +211,22 @@ function renderStatus(data) {
     currency: "IDR",
     maximumFractionDigits: 0,
   }).format(data.amount || 0);
-  const currentToken = getCurrentToken();
-  const statusLink = currentToken
-    ? `${window.location.origin}${window.location.pathname}?order=${encodeURIComponent(currentToken)}#status-order`
-    : "";
-  const statusLinkHtml = statusLink
-    ? `<p><strong>Link cek status order:</strong> <a href="${escapeHtml(statusLink)}">${escapeHtml(statusLink)}</a></p>`
-    : "";
   const installerHtml = data.license ? "" : installerDeliveryHtml(data);
   const fingerprintHelp = data.deviceFingerprint
-    ? "<p><strong>Fingerprint:</strong> sudah diterima.</p>"
+    ? "<p><strong>Fingerprint:</strong> sudah tersimpan.</p>"
     : `<p><strong>Fingerprint:</strong> belum diisi.</p>
        <ol class="status-steps">
-         <li>Tunggu link installer resmi yang dikirim ke WhatsApp/email dari order ini.</li>
-         <li>Install MedPraktik di laptop yang akan dipakai praktik.</li>
-         <li>Buka MedPraktik, lalu masuk ke layar Aktivasi/Lisensi.</li>
-         <li>Copy fingerprint perangkat dari layar tersebut.</li>
+         <li>Tunggu link installer resmi dari tim MedPraktik.</li>
+         <li>Install aplikasi, buka Aktivasi/Lisensi, lalu copy fingerprint.</li>
          <li>Paste fingerprint di form bawah ini, lalu klik Simpan Fingerprint.</li>
        </ol>`;
-  const licenseHtml = data.license
-    ? `<p><strong>License ID:</strong> ${escapeHtml(data.license.licenseId)}</p>
-       <p><strong>License key:</strong></p>
-       <code class="license-key-box">${escapeHtml(data.license.licenseKey)}</code>`
-    : "<p><strong>License:</strong> belum dibuat. License dibuat setelah pembayaran/review selesai dan fingerprint perangkat tersedia.</p>";
+  const licenseHtml = renderLicenseBlock(data);
 
   setStatusHtml(`
     <p><strong>Order ID:</strong> ${escapeHtml(data.orderId)}</p>
-    ${statusLinkHtml}
     <p><strong>Paket:</strong> ${escapeHtml(data.packageLabel)} (${amount})</p>
-    <p><strong>Status:</strong> ${escapeHtml(data.status)}</p>
-    <p><strong>Payment:</strong> ${escapeHtml(data.paymentStatus)}</p>
+    <p><strong>Status:</strong> ${escapeHtml(statusLabel(data.status))}</p>
+    <p><strong>Pembayaran:</strong> ${escapeHtml(paymentLabel(data.paymentStatus))}</p>
     <p><strong>Praktik:</strong> ${escapeHtml(data.practiceName)}</p>
     ${installerHtml}
     ${fingerprintHelp}
@@ -269,10 +256,60 @@ function applyOrderIntent(intent) {
 
 function installerDeliveryHtml(data) {
   return `<div class="installer-actions">
-    <p><strong>Installer resmi MedPraktik:</strong> link installer dikirim setelah order/request tercatat ke WhatsApp atau email pembeli.</p>
-    <p>Demi keamanan aplikasi dan lisensi perangkat, installer tidak dibuka bebas untuk umum. Ini membantu Anda mendapat versi resmi terbaru, panduan aktivasi yang benar, dan bantuan jika Windows menampilkan peringatan instalasi.</p>
-    <a class="button secondary" href="${escapeHtml(installerWhatsappUrl(data.orderId))}" target="_blank" rel="noopener">Follow up link installer via WhatsApp</a>
+    <p><strong>Link installer akan dikirim ke WhatsApp/email Anda.</strong></p>
+    <p>Agar Anda mendapat file resmi terbaru dan bantuan aktivasi.</p>
+    <a class="button secondary" href="${escapeHtml(installerWhatsappUrl(data.orderId))}" target="_blank" rel="noopener">Follow up installer via WhatsApp</a>
   </div>`;
+}
+
+function renderLicenseBlock(data) {
+  if (data.license) {
+    return `<p><strong>License key sudah dibuat.</strong></p>
+      <p><strong>License ID:</strong> ${escapeHtml(data.license.licenseId)}</p>
+      <code class="license-key-box">${escapeHtml(data.license.licenseKey)}</code>
+      <ol class="status-steps">
+        <li>Copy license key ini.</li>
+        <li>Buka MedPraktik di laptop Anda.</li>
+        <li>Paste ke kolom License key, lalu klik Aktivasi.</li>
+      </ol>`;
+  }
+
+  if (data.deviceFingerprint && ["pending", "pending_payment"].includes(data.paymentStatus)) {
+    return "<p><strong>License:</strong> belum dibuat. Fingerprint sudah tersimpan, license dibuat setelah pembayaran diterima.</p>";
+  }
+
+  if (data.deviceFingerprint) {
+    return "<p><strong>License:</strong> belum dibuat. Fingerprint sudah tersimpan dan license sedang diproses.</p>";
+  }
+
+  return "<p><strong>License:</strong> belum dibuat. License dibuat setelah pembayaran/review selesai dan fingerprint perangkat tersedia.</p>";
+}
+
+function statusLabel(status) {
+  const labels = {
+    waiting_fingerprint: "Menunggu fingerprint perangkat",
+    pending_payment: "Menunggu pembayaran",
+    paid: "Pembayaran diterima, memproses license",
+    license_generated: "License key sudah dibuat",
+    fulfilled: "License key sudah dikirim",
+    expired: "Order kedaluwarsa",
+    cancelled: "Order dibatalkan",
+    manual_review: "Menunggu review admin",
+  };
+  return labels[status] || status || "-";
+}
+
+function paymentLabel(paymentStatus) {
+  const labels = {
+    not_required: "Tidak perlu pembayaran",
+    pending: "Menunggu pembayaran",
+    settlement: "Pembayaran diterima",
+    capture: "Pembayaran diterima",
+    expire: "Pembayaran kedaluwarsa",
+    cancel: "Pembayaran dibatalkan",
+    deny: "Pembayaran ditolak",
+  };
+  return labels[paymentStatus] || paymentStatus || "-";
 }
 
 function installerWhatsappUrl(orderId) {
