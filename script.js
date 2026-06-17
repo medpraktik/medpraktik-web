@@ -255,10 +255,15 @@ function applyOrderIntent(intent) {
 }
 
 function installerDeliveryHtml(data) {
+  const downloadUrl = installerDownloadUrl();
+  const downloadButton = downloadUrl
+    ? `<a class="button primary" href="${escapeHtml(downloadUrl)}" target="_blank" rel="noopener">Download installer resmi</a>`
+    : "";
   return `<div class="installer-actions">
-    <p><strong>Link installer akan dikirim ke WhatsApp/email Anda.</strong></p>
-    <p>Agar Anda mendapat file resmi terbaru dan bantuan aktivasi.</p>
-    <a class="button secondary" href="${escapeHtml(installerWhatsappUrl(data.orderId))}" target="_blank" rel="noopener">Follow up installer via WhatsApp</a>
+    <p><strong>Download installer resmi MedPraktik.</strong></p>
+    <p>Link memakai kode status order Anda dan diarahkan ke file resmi terbaru.</p>
+    ${downloadButton}
+    <a class="button secondary" href="${escapeHtml(installerWhatsappUrl(data.orderId))}" target="_blank" rel="noopener">Bantuan installer via WhatsApp</a>
   </div>`;
 }
 
@@ -319,6 +324,11 @@ function installerWhatsappUrl(orderId) {
   return WHATSAPP_NUMBER
     ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
     : "#kontak";
+}
+
+function installerDownloadUrl() {
+  const token = getCurrentToken();
+  return token ? `/api/download-installer?order=${encodeURIComponent(token)}` : "";
 }
 
 function setCurrentToken(token) {
