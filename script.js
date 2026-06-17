@@ -11,11 +11,15 @@ const statusForm = document.querySelector("[data-status-form]");
 const statusResult = document.querySelector("[data-status-result]");
 const fingerprintForm = document.querySelector("[data-fingerprint-form]");
 
+const publicConfig = {
+  installerUrl: "",
+};
+
 const ORDER_INTENTS = {
   trial: {
     requestType: "trial",
     packageKey: "trial",
-    paymentMessage: "Order trial dibuat. Cek status di bawah, lalu kirim fingerprint setelah aplikasi MedPraktik terinstal.",
+    paymentMessage: "Order trial dibuat. Download installer dari halaman status, install di laptop target, lalu kirim fingerprint dari layar Aktivasi/Lisensi.",
   },
   basic: {
     requestType: "new_license",
@@ -47,6 +51,9 @@ const ORDER_INTENTS = {
 const WHATSAPP_NUMBER = "6283896985999";
 const WHATSAPP_MESSAGE =
   "Halo, saya ingin melihat video demo singkat atau jadwal demo live 15 menit MedPraktik dengan data dummy. Saya ingin dibantu pilih paket.";
+const INSTALLER_WHATSAPP_MESSAGE =
+  "Halo, saya sudah membuat order MedPraktik dan ingin meminta link installer untuk mengambil fingerprint perangkat.";
+const publicConfigPromise = loadPublicConfig();
 
 whatsappLinks.forEach((link) => {
   const message = link.dataset.whatsappMessage || WHATSAPP_MESSAGE;
@@ -193,6 +200,7 @@ async function loadOrderStatus(token) {
   if (!token) return;
   setStatusHtml("<p>Memuat status order...</p>");
   try {
+    await publicConfigPromise;
     const response = await fetch(`/api/order-status?token=${encodeURIComponent(token)}`);
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Status order tidak ditemukan.");
@@ -215,10 +223,17 @@ function renderStatus(data) {
   const statusLinkHtml = statusLink
     ? `<p><strong>Link cek status order:</strong> <a href="${escapeHtml(statusLink)}">${escapeHtml(statusLink)}</a></p>`
     : "";
+  const installerHtml = data.license ? "" : installerActionHtml();
   const fingerprintHelp = data.deviceFingerprint
     ? "<p><strong>Fingerprint:</strong> sudah diterima.</p>"
     : `<p><strong>Fingerprint:</strong> belum diisi.</p>
-       <p>Setelah aplikasi MedPraktik terinstal, buka layar Aktivasi, copy fingerprint perangkat, lalu kirim melalui form di bawah ini.</p>`;
+       <ol class="status-steps">
+         <li>Download installer MedPraktik.</li>
+         <li>Install di laptop yang akan dipakai praktik.</li>
+         <li>Buka MedPraktik, lalu masuk ke layar Aktivasi/Lisensi.</li>
+         <li>Copy fingerprint perangkat dari layar tersebut.</li>
+         <li>Paste fingerprint di form bawah ini, lalu klik Simpan Fingerprint.</li>
+       </ol>`;
   const licenseHtml = data.license
     ? `<p><strong>License ID:</strong> ${escapeHtml(data.license.licenseId)}</p>
        <p><strong>License key:</strong></p>
@@ -232,6 +247,7 @@ function renderStatus(data) {
     <p><strong>Status:</strong> ${escapeHtml(data.status)}</p>
     <p><strong>Payment:</strong> ${escapeHtml(data.paymentStatus)}</p>
     <p><strong>Praktik:</strong> ${escapeHtml(data.practiceName)}</p>
+    ${installerHtml}
     ${fingerprintHelp}
     ${licenseHtml}
   `);
@@ -255,6 +271,37 @@ function applyOrderIntent(intent) {
   orderForm.elements.orderIntent.value = intent;
   orderForm.elements.requestType.value = option.requestType;
   orderForm.elements.packageKey.value = option.packageKey;
+}
+
+async function loadPublicConfig() {
+  try {
+    const response = await fetch("/api/public-config");
+    if (!response.ok) return;
+    const data = await response.json();
+    publicConfig.installerUrl = typeof data.installerUrl === "string" ? data.installerUrl : "";
+  } catch (_error) {
+    publicConfig.installerUrl = "";
+  }
+}
+
+function installerActionHtml() {
+  if (publicConfig.installerUrl) {
+    return `<div class="installer-actions">
+      <p><strong>Installer MedPraktik:</strong> download installer, lalu install di laptop target untuk mengambil fingerprint.</p>
+      <a class="button primary" href="${escapeHtml(publicConfig.installerUrl)}" target="_blank" rel="noopener">Download Installer</a>
+    </div>`;
+  }
+
+  return `<div class="installer-actions">
+    <p><strong>Installer MedPraktik:</strong> link download belum tersedia otomatis. Minta link installer via WhatsApp, lalu kembali ke halaman status ini untuk mengirim fingerprint.</p>
+    <a class="button secondary" href="${escapeHtml(installerWhatsappUrl())}" target="_blank" rel="noopener">Minta Link Installer via WhatsApp</a>
+  </div>`;
+}
+
+function installerWhatsappUrl() {
+  return WHATSAPP_NUMBER
+    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(INSTALLER_WHATSAPP_MESSAGE)}`
+    : "#kontak";
 }
 
 function setCurrentToken(token) {

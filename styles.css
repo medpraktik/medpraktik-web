@@ -1381,6 +1381,29 @@ h3 {
   margin-bottom: 0;
 }
 
+.status-steps {
+  margin: 8px 0 12px;
+  padding-left: 20px;
+}
+
+.status-steps li {
+  margin: 0 0 6px;
+}
+
+.installer-actions {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 14px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.installer-actions .button {
+  width: fit-content;
+}
+
 .license-key-box {
   display: block;
   overflow-wrap: anywhere;
