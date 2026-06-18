@@ -129,7 +129,11 @@ if (orderForm) {
         fillStatusToken(data.accessToken);
       }
       if (data.redirectUrl) {
-        setOrderMessage("Order dibuat. Mengarahkan ke halaman pembayaran Midtrans...", "success", data.statusUrl);
+        setOrderMessage(
+          `Order dibuat. Kode status order: ${data.accessToken}. Mengarahkan ke halaman pembayaran Midtrans...`,
+          "success",
+          data.statusUrl,
+        );
         window.location.href = data.redirectUrl;
         return;
       }

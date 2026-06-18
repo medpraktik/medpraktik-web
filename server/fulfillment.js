@@ -1,5 +1,6 @@
-const { PACKAGE_CATALOG, optionalEnv, requireEnv, siteUrl } = require("./sales-config");
+const { PACKAGE_CATALOG, requireEnv } = require("./sales-config");
 const { generateLicensePayload, licenseId, trialExpiresAt } = require("./license-codec");
+const { sendLicenseEmail } = require("./notifications");
 const { findLicenseByOrderId, insertRow, updateRows } = require("./supabase-rest");
 
 function canAutoFulfill(order) {
@@ -62,41 +63,6 @@ async function fulfillOrder(order, actor = "system", options = {}) {
     metadata: { license_id: id },
   });
   return { license, created: true, emailSent };
-}
-
-async function sendLicenseEmail(order, license) {
-  const apiKey = optionalEnv("RESEND_API_KEY");
-  const from = optionalEnv("LICENSE_EMAIL_FROM");
-  if (!apiKey || !from) return false;
-
-  const statusLink = `${siteUrl()}/?order=${encodeURIComponent(order.access_token)}#status-order`;
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [order.email],
-      subject: `License Key MedPraktik - ${order.package_label}`,
-      text: [
-        `Halo ${order.owner_name},`,
-        "",
-        `License key MedPraktik untuk ${order.practice_name}:`,
-        license.license_key,
-        "",
-        `License ID: ${license.license_id}`,
-        `Paket: ${order.package_label}`,
-        `Fingerprint: ${order.device_fingerprint}`,
-        "",
-        `Cek status order: ${statusLink}`,
-        "",
-        "Jika butuh bantuan aktivasi, hubungi WhatsApp MedPraktik.",
-      ].join("\n"),
-    }),
-  });
-  return response.ok;
 }
 
 module.exports = {

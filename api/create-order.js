@@ -8,6 +8,7 @@ const {
 } = require("../server/sales-config");
 const { createSnapTransaction } = require("../server/midtrans");
 const { fulfillOrder } = require("../server/fulfillment");
+const { sendOrderCreatedEmail } = require("../server/notifications");
 const { insertRow, updateRows } = require("../server/supabase-rest");
 
 module.exports = async function handler(req, res) {
@@ -51,6 +52,7 @@ module.exports = async function handler(req, res) {
       if (order.device_fingerprint && buyer.packageKey === "trial") {
         await fulfillOrder(order, "system");
       }
+      await sendOrderCreatedEmail(order);
       return json(res, 201, {
         orderId: order.order_id,
         status: order.status,
@@ -60,11 +62,12 @@ module.exports = async function handler(req, res) {
     }
 
     const snap = await createSnapTransaction(order);
-    await updateRows("orders", `order_id=eq.${encodeURIComponent(order.order_id)}`, {
+    const updated = await updateRows("orders", `order_id=eq.${encodeURIComponent(order.order_id)}`, {
       midtrans_token: snap.token,
       midtrans_redirect_url: snap.redirect_url,
       updated_at: new Date().toISOString(),
     });
+    await sendOrderCreatedEmail(updated[0] || order);
 
     return json(res, 201, {
       orderId: order.order_id,
