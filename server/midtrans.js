@@ -7,6 +7,12 @@ function midtransBase() {
     : "https://app.sandbox.midtrans.com";
 }
 
+function midtransApiBase() {
+  return process.env.MIDTRANS_ENV === "production"
+    ? "https://api.midtrans.com"
+    : "https://api.sandbox.midtrans.com";
+}
+
 function authHeader() {
   return `Basic ${Buffer.from(`${requireEnv("MIDTRANS_SERVER_KEY")}:`).toString("base64")}`;
 }
@@ -51,6 +57,20 @@ async function createSnapTransaction(order) {
   return data;
 }
 
+async function getTransactionStatus(orderId) {
+  const response = await fetch(`${midtransApiBase()}/v2/${encodeURIComponent(orderId)}/status`, {
+    headers: {
+      Accept: "application/json",
+      Authorization: authHeader(),
+    },
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error_messages ? data.error_messages.join("; ") : "Midtrans status error");
+  }
+  return data;
+}
+
 function verifySignature(notification) {
   const source = `${notification.order_id}${notification.status_code}${notification.gross_amount}${requireEnv("MIDTRANS_SERVER_KEY")}`;
   const expected = crypto.createHash("sha512").update(source).digest("hex");
@@ -59,5 +79,6 @@ function verifySignature(notification) {
 
 module.exports = {
   createSnapTransaction,
+  getTransactionStatus,
   verifySignature,
 };

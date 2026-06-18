@@ -212,6 +212,9 @@ function renderStatus(data) {
     maximumFractionDigits: 0,
   }).format(data.amount || 0);
   const installerHtml = data.license ? "" : installerDeliveryHtml(data);
+  const paymentSyncWarning = data.paymentSyncWarning
+    ? `<p><strong>Catatan:</strong> ${escapeHtml(data.paymentSyncWarning)}</p>`
+    : "";
   const fingerprintHelp = data.deviceFingerprint
     ? "<p><strong>Fingerprint:</strong> sudah tersimpan.</p>"
     : `<p><strong>Fingerprint:</strong> belum diisi.</p>
@@ -229,6 +232,7 @@ function renderStatus(data) {
     <p><strong>Pembayaran:</strong> ${escapeHtml(paymentLabel(data.paymentStatus))}</p>
     <p><strong>Praktik:</strong> ${escapeHtml(data.practiceName)}</p>
     ${installerHtml}
+    ${paymentSyncWarning}
     ${fingerprintHelp}
     ${licenseHtml}
   `);
@@ -280,7 +284,7 @@ function renderLicenseBlock(data) {
   }
 
   if (data.deviceFingerprint && ["pending", "pending_payment"].includes(data.paymentStatus)) {
-    return "<p><strong>License:</strong> belum dibuat. Fingerprint sudah tersimpan, license dibuat setelah pembayaran diterima.</p>";
+    return "<p><strong>License:</strong> belum dibuat. Fingerprint sudah tersimpan, tetapi pembayaran belum terkonfirmasi dari Midtrans.</p>";
   }
 
   if (data.deviceFingerprint) {

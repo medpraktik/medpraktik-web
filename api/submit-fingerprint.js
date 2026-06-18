@@ -1,5 +1,6 @@
 const { json, methodNotAllowed, normalizeFingerprint, readJson } = require("../server/sales-config");
 const { fulfillOrder } = require("../server/fulfillment");
+const { syncOrderWithMidtrans } = require("../server/payment-sync");
 const { findOrderByAccessToken, updateRows } = require("../server/supabase-rest");
 
 module.exports = async function handler(req, res) {
@@ -28,7 +29,11 @@ module.exports = async function handler(req, res) {
       updated_at: new Date().toISOString(),
     });
     const updatedOrder = updated[0] || order;
-    if (paid) await fulfillOrder(updatedOrder, "submit_fingerprint");
+    if (paid) {
+      await fulfillOrder(updatedOrder, "submit_fingerprint");
+    } else {
+      await syncOrderWithMidtrans(updatedOrder, "submit_fingerprint");
+    }
 
     return json(res, 200, { ok: true });
   } catch (error) {
