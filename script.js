@@ -4,9 +4,11 @@ const header = document.querySelector("[data-header]");
 const galleryButtons = document.querySelectorAll("[data-shot]");
 const galleryImage = document.querySelector("[data-gallery-shot]");
 const whatsappLinks = document.querySelectorAll(".js-whatsapp-link");
+const paymentButtons = document.querySelectorAll(".js-payment-link");
 const packageButtons = document.querySelectorAll(".js-package-select");
 const orderForm = document.querySelector("[data-order-form]");
 const orderMessage = document.querySelector("[data-order-message]");
+const paymentMessage = document.querySelector("[data-payment-message]");
 const statusForm = document.querySelector("[data-status-form]");
 const statusResult = document.querySelector("[data-status-result]");
 const fingerprintForm = document.querySelector("[data-fingerprint-form]");
@@ -49,6 +51,7 @@ const WHATSAPP_MESSAGE =
   "Halo, saya ingin melihat video demo singkat atau jadwal demo live 15 menit MedPraktik dengan data dummy. Saya ingin dibantu pilih paket.";
 const INSTALLER_WHATSAPP_MESSAGE =
   "Halo, saya sudah membuat order MedPraktik dan ingin follow up link installer resmi untuk mengambil fingerprint perangkat.";
+const PUBLIC_CONFIG = window.MEDPRAKTIK_CONFIG || {};
 
 whatsappLinks.forEach((link) => {
   const message = link.dataset.whatsappMessage || WHATSAPP_MESSAGE;
@@ -97,6 +100,32 @@ galleryButtons.forEach((button) => {
 
     galleryButtons.forEach((item) => item.classList.remove("is-active"));
     button.classList.add("is-active");
+  });
+});
+
+paymentButtons.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const packageKey = link.dataset.package || "basic";
+    const paymentLink = PUBLIC_CONFIG.paymentLinks?.[packageKey] || "";
+    if (paymentLink) {
+      link.setAttribute("href", paymentLink);
+      return;
+    }
+
+    event.preventDefault();
+    const activationUrl = `aktivasi.html?paket=${encodeURIComponent(packageKey)}`;
+    const message = [
+      "Halo, saya ingin membeli MedPraktik.",
+      `Paket: ${packageLabelFromKey(packageKey)}`,
+      "Mohon kirim link pembayaran Midtrans resmi.",
+      `Saya juga bisa lanjut aktivasi melalui: ${new URL(activationUrl, window.location.href).href}`,
+    ].join("\n");
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    if (paymentMessage) {
+      paymentMessage.textContent = "Payment Link belum dipasang di website. Mengarahkan ke WhatsApp MedPraktik.";
+      paymentMessage.dataset.type = "info";
+    }
+    window.location.href = whatsappUrl;
   });
 });
 
@@ -177,7 +206,7 @@ if (fingerprintForm) {
 }
 
 const initialToken = new URLSearchParams(window.location.search).get("order");
-if (initialToken) {
+if (initialToken && statusForm && statusResult) {
   setCurrentToken(initialToken);
   fillStatusToken(initialToken);
   loadOrderStatus(initialToken);
@@ -323,6 +352,18 @@ function paymentLabel(paymentStatus) {
     deny: "Pembayaran ditolak",
   };
   return labels[paymentStatus] || paymentStatus || "-";
+}
+
+function packageLabelFromKey(packageKey) {
+  const labels = {
+    trial: "Trial",
+    basic: "Basic",
+    basic_plus: "Basic Plus",
+    upgrade_basic_to_basic_plus: "Upgrade Basic ke Basic Plus",
+    advanced: "Advanced",
+    pro: "Pro / Pengembangan Lanjutan",
+  };
+  return labels[packageKey] || packageKey || "-";
 }
 
 function installerWhatsappUrl(orderId) {

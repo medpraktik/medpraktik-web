@@ -355,7 +355,7 @@
                 <li>Tanpa picker ICD-10; upgrade ke Basic Plus bila butuh diagnosis terstruktur</li>
                 <li>Device tambahan membeli lisensi Basic tambahan atau upgrade</li>
               </ul>
-              <a class="button secondary plan-cta js-package-select" data-package="basic" href="#beli">Saya ingin Basic</a>
+              <a class="button secondary plan-cta js-payment-link" data-package="basic" href="#beli">Beli Basic</a>
             </article>
             <article class="plan recommended">
               <span class="plan-label">Administrasi praktik</span>
@@ -372,7 +372,7 @@
                 <li>Template invoice/kwitansi untuk administrasi</li>
                 <li>Device tambahan membeli lisensi Basic Plus tambahan atau upgrade</li>
               </ul>
-              <a class="button secondary plan-cta js-package-select" data-package="basic_plus" href="#beli">Saya ingin Basic Plus</a>
+              <a class="button secondary plan-cta js-payment-link" data-package="basic_plus" href="#beli">Beli Basic Plus</a>
             </article>
             <article class="plan subtle">
               <span class="plan-label">Multi-perangkat lokal</span>
@@ -436,7 +436,7 @@
               <p class="plan-name">Selisih + 10%</p>
               <h3>Basic ke Basic Plus: Rp3.300.000</h3>
               <p>Selisih Rp3.000.000 + admin/setup Rp300.000. Basic Plus ke Advanced Server: Rp6.050.000.</p>
-              <a class="button secondary plan-cta js-package-select" data-package="upgrade_basic_to_basic_plus" href="#beli">Hitung upgrade</a>
+              <a class="button secondary plan-cta js-payment-link" data-package="upgrade_basic_to_basic_plus" href="#beli">Bayar upgrade</a>
             </article>
           </div>
           <p class="pricing-help">Harga di atas adalah harga publik normal, bukan promo. Bingung pilih paket? Chat WhatsApp, nanti dibantu rekomendasi sesuai alur praktik dan rencana perangkat.</p>
@@ -446,91 +446,28 @@
       <section class="sales-flow section" id="beli">
         <div class="section-inner sales-flow-layout">
           <div class="section-heading">
-            <p class="eyebrow">Trial / Beli / Upgrade</p>
-            <h2>Buat request resmi sebelum pembayaran dan aktivasi.</h2>
-            <p>Pilih kebutuhan Anda, isi data praktik, lalu lanjutkan. Untuk keamanan aplikasi, link installer resmi dikirim setelah order/request tercatat. Setelah install, buka layar Aktivasi untuk melihat fingerprint perangkat.</p>
-            <div class="flow-cards" aria-label="Alur order MedPraktik">
-              <article><strong>1. Request Trial</strong><span>Isi data praktik dan kontak.</span></article>
-              <article><strong>2. Link Installer</strong><span>Dikirim ke WhatsApp/email setelah order tercatat.</span></article>
-              <article><strong>3. Ambil Fingerprint</strong><span>Install aplikasi, buka Aktivasi/Lisensi, lalu copy fingerprint.</span></article>
-              <article><strong>4. Trial License</strong><span>Kirim fingerprint agar trial license dibuat.</span></article>
+            <p class="eyebrow">Beli / Upgrade</p>
+            <h2>Bayar lewat Midtrans, lalu lanjut aktivasi dengan kode khusus.</h2>
+            <p>Untuk fase awal, pembelian diproses semi-manual. Setelah pembayaran, Anda diarahkan ke halaman aktivasi untuk download installer, menyimpan kode aktivasi, mengirim fingerprint, dan mengikuti progress license.</p>
+            <div class="flow-cards" aria-label="Alur pembelian MedPraktik">
+              <article><strong>1. Bayar</strong><span>Pilih paket dan bayar lewat Midtrans Payment Link.</span></article>
+              <article><strong>2. Aktivasi</strong><span>Simpan kode aktivasi, download installer, dan ambil fingerprint.</span></article>
+              <article><strong>3. Kirim Data</strong><span>Form aktivasi tersimpan dan membuat template WhatsApp otomatis.</span></article>
+              <article><strong>4. License</strong><span>Penjual cek pembayaran, generate license, lalu mengirim license key.</span></article>
             </div>
           </div>
 
-          <form class="sales-form" data-order-form>
-            <label class="span-2">
-              Saya ingin
-              <select name="orderIntent" required>
-                <option value="trial">Mencoba Trial 14 hari</option>
-                <option value="basic" selected>Beli Basic - Rp3.500.000</option>
-                <option value="basic_plus">Beli Basic Plus - Rp6.500.000</option>
-                <option value="upgrade_basic_to_basic_plus">Upgrade Basic ke Basic Plus - Rp3.300.000</option>
-                <option value="advanced">Konsultasi Advanced / jaringan lokal</option>
-                <option value="pro">Diskusi Pro / pengembangan lanjutan</option>
-              </select>
-              <small>Pilih satu kebutuhan utama. Sistem akan mengatur jenis request dan paket yang sesuai.</small>
-            </label>
-            <input name="requestType" type="hidden" value="new_license">
-            <input name="packageKey" type="hidden" value="basic">
-            <label>
-              Nama praktik/klinik
-              <input name="practiceName" type="text" autocomplete="organization" required placeholder="Contoh: Praktik dr. Andi">
-            </label>
-            <label>
-              Nama owner/penanggung jawab
-              <input name="ownerName" type="text" autocomplete="name" required placeholder="Nama lengkap">
-            </label>
-            <label>
-              WhatsApp
-              <input name="whatsapp" type="tel" autocomplete="tel" required placeholder="083896985999">
-            </label>
-            <label>
-              Email untuk status dan license key
-              <input name="email" type="email" autocomplete="email" required placeholder="nama@email.com">
-            </label>
-            <label class="span-2">
-              Fingerprint perangkat (boleh dikosongkan)
-              <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Diisi nanti dari layar Aktivasi MedPraktik">
-              <small>Belum punya installer? Lanjutkan order dulu. Link installer resmi dikirim setelah order/request tercatat agar Anda mendapat versi terbaru, instruksi aktivasi yang benar, dan bantuan jika ada kendala instalasi.</small>
-            </label>
-            <label class="span-2">
-              Catatan
-              <textarea name="notes" rows="3" placeholder="Contoh: ingin trial dulu, sudah punya Basic, atau butuh setup antrean."></textarea>
-            </label>
-            <div class="sales-form-actions span-2">
-              <button class="button primary" type="submit">Buat Order / Request</button>
-              <a class="button secondary js-whatsapp-link" data-whatsapp-message="Halo, saya ingin dibantu membuat order atau trial MedPraktik." href="https://wa.me/6283896985999">Bantuan WhatsApp</a>
+          <div class="sales-form static-buy-panel">
+            <div class="span-2">
+              <h3>Pilih paket pembelian</h3>
+              <p>Jika link pembayaran belum aktif, tombol akan mengarahkan ke WhatsApp MedPraktik.</p>
             </div>
-            <p class="form-message span-2" data-order-message role="status"></p>
-          </form>
-        </div>
-      </section>
-
-      <section class="order-status section" id="status-order">
-        <div class="section-inner status-layout">
-          <div>
-            <p class="eyebrow">Status order</p>
-            <h2>Cek pembayaran, fingerprint, dan license key.</h2>
-            <p>Gunakan kode status order untuk melihat pembayaran, follow up installer, mengirim fingerprint, dan mengambil license key. Jangan bagikan kode ini ke orang lain.</p>
-          </div>
-          <div class="status-panel">
-            <form class="status-checker" data-status-form>
-              <label>
-                Kode status order
-                <input name="accessToken" type="text" autocomplete="off" placeholder="Paste kode status order">
-              </label>
-              <button class="button secondary" type="submit">Cek Status</button>
-            </form>
-            <div class="status-result" data-status-result>
-              <p>Setelah order dibuat, status akan tampil di sini.</p>
-            </div>
-            <form class="fingerprint-form" data-fingerprint-form hidden>
-              <label>
-                Kirim fingerprint perangkat
-                <input name="deviceFingerprint" type="text" autocomplete="off" placeholder="Paste fingerprint dari layar Aktivasi MedPraktik">
-              </label>
-              <button class="button primary" type="submit">Simpan Fingerprint</button>
-            </form>
+            <a class="button primary js-payment-link" data-package="basic" href="#">Beli Basic - Rp3.500.000</a>
+            <a class="button primary js-payment-link" data-package="basic_plus" href="#">Beli Basic Plus - Rp6.500.000</a>
+            <a class="button secondary js-payment-link" data-package="upgrade_basic_to_basic_plus" href="#">Upgrade Basic ke Basic Plus</a>
+            <a class="button secondary js-whatsapp-link" data-whatsapp-message="Halo, saya ingin trial/demo MedPraktik dan dibantu proses aktivasi." href="https://wa.me/6283896985999">Trial / Demo via WhatsApp</a>
+            <a class="button secondary span-2" href="aktivasi.html">Saya sudah bayar, lanjut aktivasi</a>
+            <p class="form-message span-2" data-payment-message role="status"></p>
           </div>
         </div>
       </section>
@@ -774,6 +711,7 @@
       </div>
     </footer>
 
+    <script src="activation-config.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

@@ -1452,6 +1452,137 @@ h3 {
   vertical-align: top;
 }
 
+.activation-layout {
+  display: grid;
+  gap: 22px;
+  max-width: 980px;
+}
+
+.activation-hero h1 {
+  max-width: 880px;
+  margin: 0 0 16px;
+  color: var(--text);
+  font-size: clamp(36px, 7vw, 64px);
+  line-height: 1.04;
+}
+
+.activation-hero p {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.activation-card,
+.activation-code-card {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.activation-code-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 14px;
+  align-items: center;
+  max-width: 680px;
+  margin: 22px 0 0;
+}
+
+.activation-code-card span {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.activation-code-card strong {
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 18px;
+}
+
+.activation-card h2 {
+  margin-top: 0;
+  color: var(--text);
+}
+
+.activation-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.activation-form label,
+.operator-toolbar label {
+  display: grid;
+  gap: 7px;
+  color: var(--text);
+  font-weight: 800;
+}
+
+.activation-form input,
+.activation-form select,
+.activation-form textarea,
+.operator-toolbar select {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  background: #ffffff;
+  font: inherit;
+}
+
+.activation-form textarea {
+  resize: vertical;
+}
+
+.small-note {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.license-ready {
+  display: grid;
+  gap: 8px;
+}
+
+.operator-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  margin: 18px 0;
+}
+
+.operator-toolbar label {
+  min-width: 260px;
+}
+
+.operator-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.operator-actions .button {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.operator-license {
+  display: block;
+  max-width: 220px;
+  overflow-wrap: anywhere;
+  margin-top: 6px;
+  font-size: 11px;
+}
+
 @media (max-width: 1080px) {
   .hero-grid,
   .security-layout,
