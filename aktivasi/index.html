@@ -1,0 +1,109 @@
+﻿<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Aktivasi MedPraktik</title>
+    <meta name="description" content="Halaman aktivasi MedPraktik untuk download installer, kirim fingerprint, dan melihat progress license.">
+    <link rel="icon" href="/assets/brand/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body class="activation-page">
+    <main class="section">
+      <div class="section-inner activation-layout">
+        <section class="activation-hero">
+          <p class="eyebrow">Aktivasi MedPraktik</p>
+          <h1>Download installer, kirim fingerprint, lalu tunggu license key.</h1>
+          <p>
+            Halaman ini dipakai setelah pembayaran atau instruksi dari tim MedPraktik.
+            Simpan kode aktivasi Anda karena kode ini dipakai untuk melihat progress dan license key.
+          </p>
+          <div class="activation-code-card">
+            <span>Kode aktivasi</span>
+            <strong data-activation-code>Memuat...</strong>
+            <button class="button secondary" type="button" data-copy-code>Copy Kode</button>
+          </div>
+          <p class="form-message" data-activation-message role="status"></p>
+        </section>
+
+        <section class="activation-card">
+          <h2>1. Download installer resmi</h2>
+          <p>Installer hanya bisa digunakan dengan license key resmi. Pembayaran tetap diverifikasi admin sebelum license dikirim.</p>
+          <button class="button primary" type="button" data-download-installer>Download Installer MedPraktik</button>
+          <p class="small-note">Jika download gagal, kirim kode aktivasi ke WhatsApp MedPraktik.</p>
+        </section>
+
+        <section class="activation-card">
+          <h2>2. Ambil fingerprint perangkat</h2>
+          <ol class="status-steps">
+            <li>Install MedPraktik di laptop Windows yang akan dipakai praktik.</li>
+            <li>Buka MedPraktik.</li>
+            <li>Masuk ke layar Aktivasi/Lisensi.</li>
+            <li>Copy fingerprint perangkat dari layar tersebut.</li>
+            <li>Paste fingerprint di form aktivasi di bawah.</li>
+          </ol>
+        </section>
+
+        <section class="activation-card">
+          <h2>3. Kirim data aktivasi</h2>
+          <form class="activation-form" data-activation-form>
+            <label>
+              Paket
+              <select name="packageKey" required>
+                <option value="basic">Basic - Rp3.500.000</option>
+                <option value="basic_plus">Basic Plus - Rp6.500.000</option>
+                <option value="upgrade_basic_to_basic_plus">Upgrade Basic ke Basic Plus - Rp3.300.000</option>
+                <option value="advanced">Advanced / jaringan lokal</option>
+                <option value="pro">Pro / Pengembangan Lanjutan</option>
+                <option value="trial">Trial</option>
+              </select>
+            </label>
+            <label>
+              Nama pembeli
+              <input name="buyerName" type="text" autocomplete="name" required placeholder="Nama lengkap">
+            </label>
+            <label>
+              Nama praktik/klinik
+              <input name="practiceName" type="text" autocomplete="organization" required placeholder="Praktik dr. ...">
+            </label>
+            <label>
+              WhatsApp
+              <input name="whatsapp" type="tel" autocomplete="tel" required placeholder="083896985999">
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" autocomplete="email" required placeholder="nama@email.com">
+            </label>
+            <label>
+              Order/Payment ID Midtrans
+              <input name="midtransPaymentId" type="text" autocomplete="off" placeholder="Isi dari Midtrans/email pembayaran">
+            </label>
+            <label class="span-2">
+              Fingerprint perangkat
+              <input name="deviceFingerprint" type="text" autocomplete="off" required placeholder="Paste fingerprint dari layar Aktivasi/Lisensi">
+            </label>
+            <label class="span-2">
+              Catatan
+              <textarea name="buyerNotes" rows="3" placeholder="Contoh: sudah bayar Basic, ingin aktivasi di laptop praktik utama."></textarea>
+            </label>
+            <div class="sales-form-actions span-2">
+              <button class="button primary" type="submit">Simpan & Buat Pesan WhatsApp</button>
+              <a class="button secondary" href="#" data-whatsapp-send target="_blank" rel="noopener" hidden>Kirim WhatsApp</a>
+            </div>
+          </form>
+        </section>
+
+        <section class="activation-card">
+          <h2>Progress aktivasi</h2>
+          <div class="status-result" data-activation-status>
+            <p>Progress akan tampil setelah kode aktivasi dimuat.</p>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="/activation-config.js"></script>
+    <script src="/aktivasi.js"></script>
+  </body>
+</html>
+

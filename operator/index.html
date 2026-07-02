@@ -1,0 +1,55 @@
+﻿<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Operator MedPraktik</title>
+    <link rel="icon" href="/assets/brand/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="section admin-page">
+      <div class="section-inner">
+        <div class="section-heading">
+          <p class="eyebrow">Operator MedPraktik</p>
+          <h1>Tracking pembelian, fingerprint, dan license.</h1>
+          <p>Gunakan token operator. Cek pembayaran di Midtrans Dashboard sebelum generate license.</p>
+        </div>
+
+        <form class="admin-token-form" data-operator-token-form>
+          <label>
+            Operator token
+            <input name="operatorToken" type="password" autocomplete="off" required>
+          </label>
+          <button class="button primary" type="submit">Load Request</button>
+        </form>
+
+        <div class="operator-toolbar">
+          <label>
+            Filter status
+            <select data-status-filter>
+              <option value="">Semua status</option>
+              <option value="data_diterima">Data diterima</option>
+              <option value="menunggu_verifikasi_pembayaran">Menunggu verifikasi pembayaran</option>
+              <option value="pembayaran_valid">Pembayaran valid</option>
+              <option value="siap_generate_license">Siap generate license</option>
+              <option value="license_dibuat">License dibuat</option>
+              <option value="license_dikirim">License dikirim</option>
+              <option value="selesai">Selesai</option>
+              <option value="perlu_perbaikan_data">Perlu perbaikan data</option>
+            </select>
+          </label>
+          <button class="button secondary" type="button" data-refresh-requests>Refresh</button>
+        </div>
+
+        <div class="admin-orders" data-operator-requests>
+          <p>Masukkan token untuk melihat request aktivasi terbaru.</p>
+        </div>
+      </div>
+    </main>
+    <script src="/activation-config.js"></script>
+    <script src="/operator.js"></script>
+  </body>
+</html>
+
